@@ -1,9 +1,11 @@
 ---
 applications:
   - name:      <ecagent_server_name>
-    memory:    512M
-    instances: 1
-    command:   bash ./ec-server.sh
+    memory:    256M
     no-start:  true
     no-route:  true
+    instances: 1
+    stack: cflinuxfs2
+    path: .
+    command:   bash ./ec-server.sh
     buildpack: https://github.com/cloudfoundry/binary-buildpack.git
