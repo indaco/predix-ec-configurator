@@ -54,7 +54,12 @@ func (sc *ScenarioOneService) GenerateAndSaveAllScenarioOne(outputMarkdownFile s
 	clientContent := generateAndSaveClientScriptScenarioOne(sc.appConfig, sc.userConfig, configurationForm)
 
 	fullContents := []string{gatewayContent, gatewayManifestContent, serverContent, clientContent}
-	saveScenarioOneFullDocFile(outputMarkdownFile, configurationForm.ECGatewayName, fullContents, sc.appConfig)
+	saveScenarioOneFullDocFile(
+		outputMarkdownFile,
+		configurationForm.ECGatewayName,
+		sc.userConfig.Predix.Domain,
+		fullContents,
+		sc.appConfig)
 	return nil
 }
 
@@ -137,7 +142,7 @@ func generateAndSaveServerScriptScenarioOne(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		configurationForm.OnPremiseOS,
 		configurationForm.ECIDS[0],
-		"wss://" + configurationForm.ECGatewayName + userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + "." + userConfig.Predix.Domain,
 		configurationForm.ResourceHost,
 		configurationForm.ResourcePort,
 		configurationForm.UAAClient,
@@ -186,7 +191,7 @@ func generateAndSaveClientScriptScenarioOne(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		"ecagent_linux_sys",
 		configurationForm.ECIDS[1],
-		"wss://" + configurationForm.ECGatewayName + userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + "." + userConfig.Predix.Domain,
 		configurationForm.ECIDS[0],
 		configurationForm.UAAServiceURI,
 		configurationForm.UAAClient,
@@ -208,7 +213,7 @@ func handleClientScriptGenerationScenarioOne(config *helpers.AppSettings, config
 	return clientTemplate, saveTo
 }
 
-func saveScenarioOneFullDocFile(filename string, ecAgentGatewayName string, contents []string, config *helpers.AppSettings) {
+func saveScenarioOneFullDocFile(filename string, ecAgentGatewayName string, predixDomain string, contents []string, config *helpers.AppSettings) {
 	fullDocTemplate, err := ioutil.ReadFile(filepath.Join(config.Internal.Root, config.Internal.Templates.FullDoc.ScenarioOne))
 	if err != nil {
 		log.Fatal(err)
@@ -218,6 +223,7 @@ func saveScenarioOneFullDocFile(filename string, ecAgentGatewayName string, cont
 	mdContent = strings.Replace(mdContent, "<gateway_manifest_content_here>", contents[1], -1)
 	mdContent = strings.Replace(mdContent, "<server_script_content_here>", contents[2], -1)
 	mdContent = strings.Replace(mdContent, "<client_script_content_here>", contents[3], -1)
+	mdContent = strings.Replace(mdContent, "<predix_domain>", predixDomain, -1)
 	mdContent = strings.Replace(mdContent, "<ecagent_gateway_name>", ecAgentGatewayName, -1)
 
 	if err := helpers.WriteStringToFile(filename, mdContent, true); err != nil {

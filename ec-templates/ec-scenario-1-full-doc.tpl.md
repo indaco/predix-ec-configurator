@@ -48,16 +48,16 @@ cf enable-diego <ecagent_gateway_name>
 Now it is time to map CF Route to the Gateway app with:
 
 ```sh
-cf map-route <ecagent_gateway_name> run.aws-usw02-pr.ice.predix.io -n <ecagent_gateway_name>
+cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
 ```
 
-and start the EC Agent:
+and start the EC Agent Gateway:
 
 ```sh
 cf start <ecagent_gateway_name>
 ```
 
-Check if it works opening a browser windows at `https://<ecagent_gateway_name>.run.aws-usw02-pr.ice.predix.io/health`
+Check if it works opening a browser windows at `https://<ecagent_gateway_name>.<predix_domain>/health`
 
 ### 3. EC Agent Server
 

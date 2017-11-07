@@ -87,11 +87,11 @@ $GOPATH/bin/govendor sync
 go get
 ```
 
-Edit `configs.json` file with your Predix.io credentials:
+Edit `configs.json` file with your Predix.io credentials. If you are not on Predix Basic make sure to update the domain and the api endpoint too:
 
 ```json
 "predix": {
-    "domain": ".run.aws-usw02-pr.ice.predix.io",
+    "domain": "run.aws-usw02-pr.ice.predix.io",
     "api": "https://api.system.aws-usw02-pr.ice.predix.io",
     "username": "<your-predix-username>",
     "password": "<your-predix-password>"

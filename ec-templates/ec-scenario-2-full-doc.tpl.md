@@ -48,7 +48,7 @@ cf enable-diego <ecagent_gateway_name>
 Now it is time to map CF Route to the Gateway app with
 
 ```sh
-cf map-route <ecagent_gateway_name> run.aws-usw02-pr.ice.predix.io -n <ecagent_gateway_name>
+cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
 ```
 
 and start the EC Agent Gateway
@@ -57,7 +57,7 @@ and start the EC Agent Gateway
 cf start <ecagent_gateway_name>
 ```
 
-Check if it works opening a browser windows at `https://<ecagent_gateway_name>.run.aws-usw02-pr.ice.predix.io/health`
+Check if it works opening a browser windows at `https://<ecagent_gateway_name>.<predix_domain>/health`
 
 ### 3. EC Agent Server
 
@@ -92,7 +92,7 @@ cf enable-diego <ecagent_server_name>
 Now, it is time to map CF Route to the Gateway app
 
 ```sh
-cf map-route <ecagent_server_name> run.aws-usw02-pr.ice.predix.io -n <ecagent_server_name>
+cf map-route <ecagent_server_name> <predix_domain> -n <ecagent_server_name>
 ```
 
 and start the EC Agent Server
@@ -101,9 +101,9 @@ and start the EC Agent Server
 cf start <ecagent_server_name>
 ```
 
-Check if it works opening a browser windows at `https://<ecagent_server_name>.run.aws-usw02-pr.ice.predix.io/health`
+Check if it works opening a browser windows at `https://<ecagent_server_name>.<predix_domain>/health`
 
-**NOTE:** Verify the server appears as "SupperConns" belongs to the gateway: ``https://<ecagent_gateway_name>.run.aws-usw02-pr.ice.predix.io/health` (it may take a minute)
+**NOTE:** Verify the server appears as "SupperConns" belongs to the gateway: ``https://<ecagent_gateway_name>.<predix_domain>/health` (it may take a minute)
 
 ### 4. EC Agent Client
 
@@ -118,7 +118,7 @@ Here is the content for `ec-client` file
 You should now be able to use a local client for Predix resource and connect to it.
 
 E.g. If you want to connect to PostgreSQL on Predix, you could download and install on your local machine [PGAdmin](https://www.pgadmin.org/) and create a new server configuration as below:
- 
+
 - Hostname: localhost
 - Port: <local_port>
 - Maintenance Database: **postgresql-database-name-from-cf-vcap**

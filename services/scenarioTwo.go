@@ -63,6 +63,7 @@ func (sc *ScenarioTwoService) GenerateAndSaveAllScenarioTwo(outputMarkdownFile s
 		outputMarkdownFile,
 		configurationForm.ECGatewayName,
 		configurationForm.ECServerName,
+		sc.userConfig.Predix.Domain,
 		configurationForm.LocalPort,
 		fullContents,
 		sc.appConfig)
@@ -159,7 +160,7 @@ func generateAndSaveServerScriptScenarioTwo(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		"ecagent_linux_sys",
 		configurationForm.ECIDS[0],
-		"wss://" + configurationForm.ECGatewayName + userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + "."+ userConfig.Predix.Domain,
 		configurationForm.ResourceHost,
 		configurationForm.ResourcePort,
 		configurationForm.UAAClient,
@@ -202,7 +203,7 @@ func generateAndSaveClientScriptScenarioTwo(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		configurationForm.OnPremiseOS,
 		configurationForm.ECIDS[1],
-		"wss://" + configurationForm.ECGatewayName + userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + "." + userConfig.Predix.Domain,
 		configurationForm.ECIDS[0],
 		configurationForm.ECZoneID,
 		configurationForm.UAAServiceURI,
@@ -235,7 +236,7 @@ func handleClientScriptGenerationScenarioTwo(config *helpers.AppSettings, config
 	return clientTemplate, saveTo
 }
 
-func saveScenarioTwoFullDocFile(filename string, ecAgentGatewayName string, ecAgentServerName string, localPort string, contents []string, config *helpers.AppSettings) {
+func saveScenarioTwoFullDocFile(filename string, ecAgentGatewayName string, ecAgentServerName string, predixDomain string, localPort string, contents []string, config *helpers.AppSettings) {
 	fullDocTemplate, err := ioutil.ReadFile(filepath.Join(config.Internal.Root, config.Internal.Templates.FullDoc.ScenarioTwo))
 	if err != nil {
 		log.Fatal(err)
@@ -248,6 +249,7 @@ func saveScenarioTwoFullDocFile(filename string, ecAgentGatewayName string, ecAg
 	mdContent = strings.Replace(mdContent, "<client_script_content_here>", contents[4], -1)
 	mdContent = strings.Replace(mdContent, "<ecagent_gateway_name>", ecAgentGatewayName, -1)
 	mdContent = strings.Replace(mdContent, "<ecagent_server_name>", ecAgentServerName, -1)
+	mdContent = strings.Replace(mdContent, "<predix_domain>", predixDomain, -1)
 	mdContent = strings.Replace(mdContent, "<local_port>", localPort, -1)
 
 	if err := helpers.WriteStringToFile(filename, mdContent, true); err != nil {
