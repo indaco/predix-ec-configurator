@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -24,13 +25,32 @@ func init() {
 	}
 }
 
+type ArgsConfig struct {
+	vagrant bool
+}
+
+func (c *ArgsConfig) Setup() {
+	flag.BoolVar(&c.vagrant, "vagrant", false, "is it running with Vagrant?")
+}
+
 func main() {
 	log.Println("-> Starting EC-CONFIGURATOR...")
 	log.Println("-> Initializing the app...")
+
 	// Load configurations
 	appConfig := helpers.DefaultAppSettings()
 	userConfig := helpers.UserConfig{}
 	_ = helpers.LoadConfig("config.json", &userConfig)
+
+	// Running on Vagrant? If yes, change output folder path
+	// https://github.com/indaco/predix-ec-configurator-vagrant
+	args := ArgsConfig{}
+	args.Setup()
+	flag.Parse()
+	if args.vagrant {
+		log.Println("-> predix-ec-configurator is running on a Vagrant box")
+		appConfig.Output.Root = "/vagrant/output"
+	}
 
 	// Create a CF Predix Client and sign-in to Predix.io
 	predixClientConfig := helpers.GetPredixClientConfig(&userConfig)
