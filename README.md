@@ -50,6 +50,8 @@ This app speed up the configuration of ECAgent script based on your selected sce
 
 Below what you need to use Enterprise Connect on Predix.io and what is needed on your local machine to use this application and get started with Enterprise Connect.
 
+<mark>**NOTE:** If you are looking for a quick way to use this app instead to install and configure your computer, refer to the Vagrant box setup available [here](https://github.com/indaco/predix-ec-configurator-vagrant).</mark>
+
 ### System Requirements
 
 Be sure to have the following software installed and configured on your machine:
