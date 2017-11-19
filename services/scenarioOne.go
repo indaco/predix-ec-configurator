@@ -53,6 +53,8 @@ func (sc *ScenarioOneService) GenerateAndSaveAllScenarioOne(outputMarkdownFile s
 	serverContent := generateAndSaveServerScriptScenarioOne(sc.appConfig, sc.userConfig, configurationForm)
 	clientContent := generateAndSaveClientScriptScenarioOne(sc.appConfig, sc.userConfig, configurationForm)
 
+	generateAndSavePushGatewayScriptScenarioOne(sc.appConfig, sc.userConfig, configurationForm)
+
 	fullContents := []string{gatewayContent, gatewayManifestContent, serverContent, clientContent}
 	saveScenarioOneFullDocFile(
 		outputMarkdownFile,
@@ -121,6 +123,34 @@ func generateAndSaveGatewayManifestScenarioOne(config *helpers.AppSettings, conf
 		panic(err)
 	}
 	return content
+}
+
+func generateAndSavePushGatewayScriptScenarioOne(appConfig *helpers.AppSettings, userConfig *helpers.UserConfig, configurationForm ScenarioOneConfigurationForm) {
+	pushGatewayTemplate := ""
+	saveTo := ""
+
+	if strings.Contains(configurationForm.OnPremiseOS, "windows") {
+		pushGatewayTemplate = filepath.Join(appConfig.Internal.Root, appConfig.Internal.Templates.GatewayTmpl.Root, appConfig.Internal.Templates.GatewayTmpl.PushGatewayScript.Windows)
+		saveTo = filepath.Join(appConfig.Output.Root, appConfig.Output.Gateway.Root, appConfig.Output.Gateway.PushGatewayScript.Windows)
+	} else {
+		pushGatewayTemplate = filepath.Join(appConfig.Internal.Root, appConfig.Internal.Templates.GatewayTmpl.Root, appConfig.Internal.Templates.GatewayTmpl.PushGatewayScript.Unix)
+		saveTo = filepath.Join(appConfig.Output.Root, appConfig.Output.Gateway.Root, appConfig.Output.Gateway.PushGatewayScript.Unix)
+	}
+
+	replaceMe := []string{
+		"<predix_domain>",
+		"<ecagent_gateway_name>",
+	}
+	replaceWith := []string{
+		userConfig.Predix.Domain,
+		configurationForm.ECGatewayName,
+	}
+
+	content := helpers.ReplaceAll(pushGatewayTemplate, replaceMe, replaceWith)
+
+	if err := helpers.WriteStringToFile(saveTo, content, true); err != nil {
+		panic(err)
+	}
 }
 
 func generateAndSaveServerScriptScenarioOne(appConfig *helpers.AppSettings, userConfig *helpers.UserConfig, configurationForm ScenarioOneConfigurationForm) string {

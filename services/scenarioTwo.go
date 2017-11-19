@@ -58,6 +58,8 @@ func (sc *ScenarioTwoService) GenerateAndSaveAllScenarioTwo(outputMarkdownFile s
 	serverManifestContent := generateAndSaveServerManifestScenarioTwo(sc.appConfig, configurationForm)
 	clientContent := generateAndSaveClientScriptScenarioTwo(sc.appConfig, sc.userConfig, configurationForm)
 
+	generateAndSavePushGatewayScriptScenarioTwo(sc.appConfig, sc.userConfig, configurationForm)
+	generateAndSavePushServerScriptScenarioTwo(sc.appConfig, sc.userConfig, configurationForm)
 	fullContents := []string{gatewayContent, gatewayManifestContent, serverContent, serverManifestContent, clientContent}
 	saveScenarioTwoFullDocFile(
 		outputMarkdownFile,
@@ -128,6 +130,34 @@ func generateAndSaveGatewayManifestScenarioTwo(config *helpers.AppSettings, conf
 		panic(err)
 	}
 	return content
+}
+
+func generateAndSavePushGatewayScriptScenarioTwo(appConfig *helpers.AppSettings, userConfig *helpers.UserConfig, configurationForm ScenarioTwoConfigurationForm) {
+	pushGatewayTemplate := ""
+	saveTo := ""
+
+	if strings.Contains(configurationForm.OnPremiseOS, "windows") {
+		pushGatewayTemplate = filepath.Join(appConfig.Internal.Root, appConfig.Internal.Templates.GatewayTmpl.Root, appConfig.Internal.Templates.GatewayTmpl.PushGatewayScript.Windows)
+		saveTo = filepath.Join(appConfig.Output.Root, appConfig.Output.Gateway.Root, appConfig.Output.Gateway.PushGatewayScript.Windows)
+	} else {
+		pushGatewayTemplate = filepath.Join(appConfig.Internal.Root, appConfig.Internal.Templates.GatewayTmpl.Root, appConfig.Internal.Templates.GatewayTmpl.PushGatewayScript.Unix)
+		saveTo = filepath.Join(appConfig.Output.Root, appConfig.Output.Gateway.Root, appConfig.Output.Gateway.PushGatewayScript.Unix)
+	}
+
+	replaceMe := []string{
+		"<predix_domain>",
+		"<ecagent_gateway_name>",
+	}
+	replaceWith := []string{
+		userConfig.Predix.Domain,
+		configurationForm.ECGatewayName,
+	}
+
+	content := helpers.ReplaceAll(pushGatewayTemplate, replaceMe, replaceWith)
+
+	if err := helpers.WriteStringToFile(saveTo, content, true); err != nil {
+		panic(err)
+	}
 }
 
 func generateAndSaveServerManifestScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) string {
@@ -233,6 +263,34 @@ func handleClientScriptGenerationScenarioTwo(config *helpers.AppSettings, config
 	}
 
 	return clientTemplate, saveTo
+}
+
+func generateAndSavePushServerScriptScenarioTwo(config *helpers.AppSettings, userConfig *helpers.UserConfig, configurationForm ScenarioTwoConfigurationForm) {
+	pushServerTemplate := ""
+	saveTo := ""
+
+	if strings.Contains(configurationForm.OnPremiseOS, "windows") {
+		pushServerTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.PushServerScript.Windows)
+		saveTo = filepath.Join(config.Output.Root, config.Output.Server.Root, config.Output.Server.PushServerScript.Windows)
+	} else {
+		pushServerTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.PushServerScript.Unix)
+		saveTo = filepath.Join(config.Output.Root, config.Output.Server.Root, config.Output.Server.PushServerScript.Unix)
+	}
+
+	replaceMe := []string{
+		"<predix_domain>",
+		"<ecagent_server_name>",
+	}
+	replaceWith := []string{
+		userConfig.Predix.Domain,
+		configurationForm.ECServerName,
+	}
+
+	content := helpers.ReplaceAll(pushServerTemplate, replaceMe, replaceWith)
+
+	if err := helpers.WriteStringToFile(saveTo, content, true); err != nil {
+		panic(err)
+	}
 }
 
 func saveScenarioTwoFullDocFile(filename string, ecAgentGatewayName string, ecAgentServerName string, predixDomain string, localPort string, contents []string, config *helpers.AppSettings) {

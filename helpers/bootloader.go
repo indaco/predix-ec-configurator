@@ -25,6 +25,10 @@ func DefaultAppSettings() *AppSettings {
 				Root:     "gateway",
 				Script:   "ec-gateway.sh",
 				Manifest: "manifest.yml",
+				PushGatewayScript: PushScript{
+					Unix:    "push-gateway.sh",
+					Windows: "push-gateway.bat",
+				},
 			},
 			Server: Server{
 				Root: "server",
@@ -33,6 +37,10 @@ func DefaultAppSettings() *AppSettings {
 					Windows: "ec-server.bat",
 				},
 				Manifest: "manifest.yml",
+				PushServerScript: PushScript{
+					Unix:    "push-server.sh",
+					Windows: "push-server.bat",
+				},
 			},
 			Client: Client{
 				Root: "client",
@@ -49,6 +57,10 @@ func DefaultAppSettings() *AppSettings {
 					Root:          "gateway",
 					Manifest:      "gateway-manifest.tpl.yml",
 					GatewayScript: "ec-gateway.tpl.sh",
+					PushGatewayScript: PushScript{
+						Unix:    "push-gateway.tpl.sh",
+						Windows: "push-gateway.tpl.bat",
+					},
 				},
 				ServerTmpl: ServerTmpl{
 					Root:     "server",
@@ -59,6 +71,10 @@ func DefaultAppSettings() *AppSettings {
 					},
 					ServerScriptScenarioTwo: Script{
 						Unix: "ec-server.tpl.2.sh",
+					},
+					PushServerScript: PushScript{
+						Unix:    "push-server.tpl.sh",
+						Windows: "push-server.tpl.bat",
 					},
 				},
 				ClientTmpl: ClientTmpl{
@@ -108,15 +124,17 @@ type Output struct {
 }
 
 type Gateway struct {
-	Root     string `json:"root"`
-	Script   string `json:"script"`
-	Manifest string `json:"manifest"`
+	Root              string `json:"root"`
+	Script            string `json:"script"`
+	Manifest          string `json:"manifest"`
+	PushGatewayScript PushScript
 }
 
 type Server struct {
-	Root     string `json:"root"`
-	Script   `json:"script"`
-	Manifest string `json:"manifest"`
+	Root             string `json:"root"`
+	Script           `json:"script"`
+	Manifest         string `json:"manifest"`
+	PushServerScript PushScript
 }
 
 type Client struct {
@@ -138,11 +156,13 @@ type ServerScriptScenarioOne = Script
 type ServerScriptScenarioTwo = Script
 type ClientScriptScenarioOne = Script
 type ClientScriptScenarioTwo = Script
+type PushScript = Script
 
 type GatewayTmpl struct {
-	Root          string `json:"root"`
-	Manifest      string `json:"manifest"`
-	GatewayScript string `json:"gateway"`
+	Root              string `json:"root"`
+	Manifest          string `json:"manifest"`
+	GatewayScript     string `json:"gateway"`
+	PushGatewayScript PushScript
 }
 
 type ServerTmpl struct {
@@ -150,6 +170,7 @@ type ServerTmpl struct {
 	Manifest                string `json:"manifest"`
 	ServerScriptScenarioOne `json:"serverOne"`
 	ServerScriptScenarioTwo `json:"serverTwo"`
+	PushServerScript        PushScript
 }
 type ClientTmpl struct {
 	Root                    string `json:"root"`

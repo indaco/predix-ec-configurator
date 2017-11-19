@@ -39,6 +39,8 @@ Here is the content for `manifest.yml` file
 
 It is time now to push the EC Agent Gateway app to Predix.io
 
+**NOTE:** The `output/gateway` folder contains a `push-gateway` script to do all the following in a single step.
+
 ```shell
 $ cd output/gateway
 $ cf push
