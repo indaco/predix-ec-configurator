@@ -13,7 +13,7 @@ The service also provides integrated security with UAA and flexible deployment o
 
 - - -
 
-## Why I need this app? How it could help me?
+## Why I need Enterprise Connect and how it works?
 
 Enterprise Connect addresses two scenarios:
 
@@ -35,7 +35,9 @@ EC Agent is equipped with three explicit functional modes:
 
 A single binary like EC Agent is used to address both scenarios and needs several parameters to work.
 
-### So, what is the end-goal for this app??
+- - -
+
+## What does this app and how it can help?
 
 This app speed up the configuration of ECAgent script based on your selected scenario using an automated approach to avoid errors due manual activities. The app asks you a very short list of information to make the rest in background for you. Once you have finished, the app:
 
@@ -48,11 +50,15 @@ This app speed up the configuration of ECAgent script based on your selected sce
 
 ## What I need to use this app?
 
-Below what you need to use Enterprise Connect on Predix.io and what is needed on your local machine to use this application and get started with Enterprise Connect.
+Two options are available:
 
-<mark>**NOTE:** If you are looking for a quick way to use this app instead to install and configure your computer, refer to the Vagrant box setup available [here](https://github.com/indaco/predix-ec-configurator-vagrant).</mark>
+### 1. Vagrant box
 
-### System Requirements
+If you are looking for a quick way to use this app instead to install and configure your computer, refer to the Vagrant box setup available [here](https://github.com/indaco/predix-ec-configurator-vagrant).
+
+### 2. Install and configure your local machine
+
+Below what is needed on your local machine to use this application and get started with Enterprise Connect.
 
 Be sure to have the following software installed and configured on your machine:
 
