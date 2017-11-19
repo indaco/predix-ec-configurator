@@ -46,10 +46,12 @@ func DefaultAppSettings() *AppSettings {
 			Root: "ec-templates",
 			Templates: Templates{
 				GatewayTmpl: GatewayTmpl{
+					Root:          "gateway",
 					Manifest:      "gateway-manifest.tpl.yml",
 					GatewayScript: "ec-gateway.tpl.sh",
 				},
 				ServerTmpl: ServerTmpl{
+					Root:     "server",
 					Manifest: "server-manifest.tpl.yml",
 					ServerScriptScenarioOne: Script{
 						Unix:    "ec-server.tpl.1.sh",
@@ -60,6 +62,7 @@ func DefaultAppSettings() *AppSettings {
 					},
 				},
 				ClientTmpl: ClientTmpl{
+					Root: "client",
 					ClientScriptScenarioOne: Script{
 						Unix: "ec-client.tpl.1.sh",
 					},
@@ -137,16 +140,19 @@ type ClientScriptScenarioOne = Script
 type ClientScriptScenarioTwo = Script
 
 type GatewayTmpl struct {
+	Root          string `json:"root"`
 	Manifest      string `json:"manifest"`
 	GatewayScript string `json:"gateway"`
 }
 
 type ServerTmpl struct {
+	Root                    string `json:"root"`
 	Manifest                string `json:"manifest"`
 	ServerScriptScenarioOne `json:"serverOne"`
 	ServerScriptScenarioTwo `json:"serverTwo"`
 }
 type ClientTmpl struct {
+	Root                    string `json:"root"`
 	ClientScriptScenarioOne `json:"clientOne"`
 	ClientScriptScenarioTwo `json:"clientTwo"`
 }

@@ -95,7 +95,7 @@ func (sc *ScenarioTwoService) ExtractAndMoveECBinaryScenarioTwo(configurationFor
 }
 
 func generateAndSaveGatewayScriptScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) string {
-	gatewayTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayScript)
+	gatewayTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Root, config.Internal.Templates.GatewayTmpl.GatewayScript)
 	replaceMe := []string{
 		"<ec-zone-id>",
 		"<ec-cf-service-url>",
@@ -118,7 +118,7 @@ func generateAndSaveGatewayScriptScenarioTwo(config *helpers.AppSettings, config
 }
 
 func generateAndSaveGatewayManifestScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) string {
-	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Manifest)
+	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Root, config.Internal.Templates.GatewayTmpl.Manifest)
 	replaceMe := []string{"<ecagent_gateway_name>"}
 	replaceWith := []string{configurationForm.ECGatewayName}
 
@@ -131,7 +131,7 @@ func generateAndSaveGatewayManifestScenarioTwo(config *helpers.AppSettings, conf
 }
 
 func generateAndSaveServerManifestScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) string {
-	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Manifest)
+	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.Manifest)
 	replaceMe := []string{"<ecagent_server_name>"}
 	replaceWith := []string{configurationForm.ECServerName}
 
@@ -160,7 +160,7 @@ func generateAndSaveServerScriptScenarioTwo(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		"ecagent_linux_sys",
 		configurationForm.ECIDS[0],
-		"wss://" + configurationForm.ECGatewayName + "."+ userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + "." + userConfig.Predix.Domain,
 		configurationForm.ResourceHost,
 		configurationForm.ResourcePort,
 		configurationForm.UAAClient,
@@ -178,7 +178,7 @@ func generateAndSaveServerScriptScenarioTwo(appConfig *helpers.AppSettings, user
 }
 
 func handleServerScriptGenerationScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) (template, fileToSave string) {
-	serverTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioTwo.Unix)
+	serverTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioTwo.Unix)
 	saveTo := filepath.Join(config.Output.Root, config.Output.Server.Root, config.Output.Server.Script.Unix)
 
 	fmt.Println(serverTemplate + " - " + saveTo)
@@ -222,16 +222,15 @@ func generateAndSaveClientScriptScenarioTwo(appConfig *helpers.AppSettings, user
 }
 
 func handleClientScriptGenerationScenarioTwo(config *helpers.AppSettings, configurationForm ScenarioTwoConfigurationForm) (template, fileToSave string) {
-	clientTemplate := "" //filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioTwo.Unix)
+	clientTemplate := ""
 	saveTo := ""
 	if strings.Contains(configurationForm.OnPremiseOS, "windows") {
-		clientTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioTwo.Windows)
+		clientTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioTwo.Windows)
 		saveTo = filepath.Join(config.Output.Root, config.Output.Client.Root, config.Output.Client.Script.Windows)
 	} else {
-		clientTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioTwo.Unix)
+		clientTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioTwo.Unix)
 		saveTo = filepath.Join(config.Output.Root, config.Output.Client.Root, config.Output.Client.Script.Unix)
 	}
-	//saveTo := filepath.Join(config.Output.Root, config.Output.Client.Root, config.Output.Client.Script.Unix)
 
 	return clientTemplate, saveTo
 }

@@ -88,7 +88,7 @@ func (sc *ScenarioOneService) ExtractAndMoveECBinaryScenarioOne(configurationFor
 }
 
 func generateAndSaveGatewayScriptScenarioOne(config *helpers.AppSettings, configurationForm ScenarioOneConfigurationForm) string {
-	gatewayTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.GatewayScript)
+	gatewayTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Root, config.Internal.Templates.GatewayTmpl.GatewayScript)
 	replaceMe := []string{
 		"<ecagent-os-sys>",
 		"<ec-zone-id>",
@@ -111,7 +111,7 @@ func generateAndSaveGatewayScriptScenarioOne(config *helpers.AppSettings, config
 }
 
 func generateAndSaveGatewayManifestScenarioOne(config *helpers.AppSettings, configurationForm ScenarioOneConfigurationForm) string {
-	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Manifest)
+	manifestTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.GatewayTmpl.Root, config.Internal.Templates.GatewayTmpl.Manifest)
 	replaceMe := []string{"<ecagent_gateway_name>"}
 	replaceWith := []string{configurationForm.ECGatewayName}
 
@@ -166,10 +166,10 @@ func handleServerScriptGenerationScenarioOne(config *helpers.AppSettings, config
 	saveTo := ""
 
 	if strings.Contains(configurationForm.OnPremiseOS, "windows") {
-		serverTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioOne.Windows)
+		serverTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioOne.Windows)
 		saveTo = filepath.Join(config.Output.Root, config.Output.Server.Root, config.Output.Server.Script.Windows)
 	} else {
-		serverTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioOne.Unix)
+		serverTemplate = filepath.Join(config.Internal.Root, config.Internal.Templates.ServerTmpl.Root, config.Internal.Templates.ServerTmpl.ServerScriptScenarioOne.Unix)
 		saveTo = filepath.Join(config.Output.Root, config.Output.Server.Root, config.Output.Server.Script.Unix)
 	}
 
@@ -191,7 +191,7 @@ func generateAndSaveClientScriptScenarioOne(appConfig *helpers.AppSettings, user
 	replaceWith := []string{
 		"ecagent_linux_sys",
 		configurationForm.ECIDS[1],
-		"wss://" + configurationForm.ECGatewayName + "." + userConfig.Predix.Domain,
+		"wss://" + configurationForm.ECGatewayName + ". " + userConfig.Predix.Domain,
 		configurationForm.ECIDS[0],
 		configurationForm.UAAServiceURI,
 		configurationForm.UAAClient,
@@ -207,7 +207,7 @@ func generateAndSaveClientScriptScenarioOne(appConfig *helpers.AppSettings, user
 }
 
 func handleClientScriptGenerationScenarioOne(config *helpers.AppSettings, configurationForm ScenarioOneConfigurationForm) (template, fileToSave string) {
-	clientTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioOne.Unix)
+	clientTemplate := filepath.Join(config.Internal.Root, config.Internal.Templates.ClientTmpl.Root, config.Internal.Templates.ClientTmpl.ClientScriptScenarioOne.Unix)
 	saveTo := filepath.Join(config.Output.Root, config.Output.Client.Root, config.Output.Client.Script.Unix)
 
 	return clientTemplate, saveTo
