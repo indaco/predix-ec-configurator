@@ -4,28 +4,34 @@
 
 Here is a step-to-step document to setup EC for the selected scenario.
 
-### 1. Diego-Enabler
+### 1. Login to Predix.io
+
+```shell
+$ cf login // or predix login if you use Predix CLI
+```
+
+### 2. Install Diego-Enabler plugin
 
 Cloud Foundry uses the Diego architecture to manage application containers. Diego components assume application scheduling and management responsibility from the Cloud Controller.
 
 Enable Diego support for an app running on Cloud Foundry.
 
-```sh
-cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org/
-cf install-plugin Diego-Enabler -r CF-Community
+```shell
+$ cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org/
+$ cf install-plugin Diego-Enabler -r CF-Community
 ```
 
-### 2. EC Agent Gateway
+### 3. EC Agent Gateway
 
 Here is the content for `ec-gateway.sh` file
 
-```sh
+```shell
 <gateway_script_content_here>
 ```
 
 Here is the content for `manifest.yml` file
 
-```sh
+```shell
 <gateway_manifest_content_here>
 ```
 
@@ -33,51 +39,50 @@ Here is the content for `manifest.yml` file
 
 It is time now to push the EC Agent Gateway app to Predix.io
 
-```sh
-cf login // or predix login if you use Predix CLI
-cd output/gateway
-cf push
+```shell
+$ cd output/gateway
+$ cf push
 ```
 
 Enable Diego support:
 
-```sh
-cf enable-diego <ecagent_gateway_name>
+```shell
+$ cf enable-diego <ecagent_gateway_name>
 ```
 
 Now it is time to map CF Route to the Gateway app with:
 
-```sh
-cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
+```shell
+$ cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
 ```
 
 and start the EC Agent Gateway:
 
-```sh
-cf start <ecagent_gateway_name>
+```shell
+$ cf start <ecagent_gateway_name>
 ```
 
 Check if it works opening a browser windows at `https://<ecagent_gateway_name>.<predix_domain>/health`
 
-### 3. EC Agent Server
+### 4. EC Agent Server
 
 Here is the content for `ec-server` file
 
-```sh
+```shell
 <server_script_content_here>
 ```
 
 This script has to be executed locally on your machine.
 
-### 4. EC Agent Client
+### 5. EC Agent Client
 
 Here is the content for `ec-client.sh` file
 
-```sh
+```shell
 <client_script_content_here>
 ```
 
-### 5. Connect to the local data source from your Predix App
+#### Connect to the local data source from your Predix App
 
 Now, th ecagent-client has to be embedded into your application code to be executed on Predix cloud. E.g. in case of access to an on-premise PostgreSQL instance, it means that your PostgreSQL client app has to execute the ECAgent Client script before create a connection to the PostgreSQL server.
 

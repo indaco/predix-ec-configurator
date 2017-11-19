@@ -4,22 +4,28 @@
 
 Here is a step-to-step document to setup EC for the selected scenario.
 
-### 1. Diego-Enabler
+### 0. Login to Predix.io
+
+```shell
+$ cf login // or predix login if you use Predix CLI
+```
+
+### 1. Install Diego-Enabler plugin
 
 Cloud Foundry uses the Diego architecture to manage application containers. Diego components assume application scheduling and management responsibility from the Cloud Controller.
 
 Enable Diego support for an app running on Cloud Foundry.
 
-```sh
-cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org/
-cf install-plugin Diego-Enabler -r CF-Community
+```shell
+$ cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org/
+$ cf install-plugin Diego-Enabler -r CF-Community
 ```
 
 ### 2. EC Agent Gateway
 
 Here is the content for `ec-gateway.sh` file
 
-```sh
+```shell
 <gateway_script_content_here>
 ```
 
@@ -33,28 +39,27 @@ Here is the content for `manifest.yml` file
 
 It is time now to push the EC Agent Gateway app to Predix.io
 
-```sh
-cf login // or predix login if you use Predix CLI
-cd output/gateway
-cf push
+```shell
+$ cd output/gateway
+$ cf push
 ```
 
 Enable Diego support:
 
-```sh
-cf enable-diego <ecagent_gateway_name>
+```shell
+$ cf enable-diego <ecagent_gateway_name>
 ```
 
 Now it is time to map CF Route to the Gateway app with
 
-```sh
-cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
+```shell
+$ cf map-route <ecagent_gateway_name> <predix_domain> -n <ecagent_gateway_name>
 ```
 
 and start the EC Agent Gateway
 
-```sh
-cf start <ecagent_gateway_name>
+```shell
+$ cf start <ecagent_gateway_name>
 ```
 
 Check if it works opening a browser windows at `https://<ecagent_gateway_name>.<predix_domain>/health`
@@ -63,13 +68,13 @@ Check if it works opening a browser windows at `https://<ecagent_gateway_name>.<
 
 Here is the content for `ec-server.sh` file
 
-```sh
+```shell
 <server_script_content_here>
 ```
 
 Here is the content for `manifest.yml` file
 
-```sh
+```shell
 <server_manifest_content_here>
 ```
 
@@ -77,39 +82,38 @@ Here is the content for `manifest.yml` file
 
 It is time now to push the EC Agent Server app to Predix.io
 
-```sh
-cf login // or predix login if you use Predix CLI
-cd output/server
-cf push
+```shell
+$ cd output/server
+$ cf push
 ```
 
 Enable Diego support:
 
-```sh
-cf enable-diego <ecagent_server_name>
+```shell
+$ cf enable-diego <ecagent_server_name>
 ```
 
 Now, it is time to map CF Route to the Gateway app
 
-```sh
-cf map-route <ecagent_server_name> <predix_domain> -n <ecagent_server_name>
+```shell
+ $ cf map-route <ecagent_server_name> <predix_domain> -n <ecagent_server_name>
 ```
 
 and start the EC Agent Server
 
-```sh
-cf start <ecagent_server_name>
+```shell
+$ cf start <ecagent_server_name>
 ```
 
 Check if it works opening a browser windows at `https://<ecagent_server_name>.<predix_domain>/health`
 
-**NOTE:** Verify the server appears as "SupperConns" belongs to the gateway: ``https://<ecagent_gateway_name>.<predix_domain>/health` (it may take a minute)
+**NOTE:** Verify the server appears as "SupperConns" belongs to the gateway: `https://<ecagent_gateway_name>.<predix_domain>/health` (it may take a minute)
 
 ### 4. EC Agent Client
 
 Here is the content for `ec-client` file
 
-```sh
+```shell
 <client_script_content_here>
 ```
 
@@ -121,6 +125,6 @@ E.g. If you want to connect to PostgreSQL on Predix, you could download and inst
 
 - Hostname: localhost
 - Port: <local_port>
-- Maintenance Database: **postgresql-database-name-from-cf-vcap**
+- Database: **postgresql-database-name-from-cf-vcap**
 - Username: **postgresql-user-from-cf-vcap**
 - Password: **postgresql-password-from-cf-vcap**
