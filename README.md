@@ -72,9 +72,7 @@ Be sure to have the following software installed and configured on your machine:
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases): Official command line client for Cloud Foundry
 - [Predix CLI](https://github.com/PredixDev/predix-cli) (Optional): Command line utility meant to simplify interaction with the Predix Cloud
 
-- - -
-
-## How to use it?
+#### How to use it?
 
 Get the code:
 
