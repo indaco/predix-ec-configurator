@@ -72,25 +72,25 @@ Be sure to have the following software installed and configured on your machine:
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases): Official command line client for Cloud Foundry
 - [Predix CLI](https://github.com/PredixDev/predix-cli) (Optional): Command line utility meant to simplify interaction with the Predix Cloud
 
-#### How to use it?
+#### Get the app and use it
 
 Get the code:
 
-```sh
-go get -u github.com/indaco/predix-ec-configurator
+```shell
+$ go get -u github.com/indaco/predix-ec-configurator
 ```
 
 Move to the app folder:
 
-```sh
-cd $GOPATH/src/github.com/indaco/predix-ec-configurator
+```shell
+$ cd $GOPATH/src/github.com/indaco/predix-ec-configurator
 ```
 
 And get all dependencies:
 
-```sh
-$GOPATH/bin/govendor sync
-go get
+```shell
+$ $GOPATH/bin/govendor sync
+$ go get
 ```
 
 Edit `configs.json` file with your Predix.io credentials. If you are not on Predix Basic make sure to update the domain and the api endpoint too:
@@ -107,14 +107,14 @@ Edit `configs.json` file with your Predix.io credentials. If you are not on Pred
 
 Run the app:
 
-```sh
-go run main.go
+```shell
+$ go run main.go
 ```
 
 or:
-```sh
-go build
-./predix-ec-configurator
+```shell
+$ go build
+$ ./predix-ec-configurator
 ```
 
 Open a browser window at `http://localhost:9000`
