@@ -48,7 +48,7 @@ This app speed up the configuration of ECAgent script based on your selected sce
 
 - - -
 
-## What I need to use this app?
+## Setup - What I need to use this app?
 
 Two options are available:
 
@@ -56,7 +56,7 @@ Two options are available:
 
 If you are looking for a quick way to use this app instead to install and configure your computer, refer to the Vagrant box setup available [here](https://github.com/indaco/predix-ec-configurator-vagrant).
 
-### 2. Install and configure your local machine
+### 2. Build the app for yourself
 
 Below what is needed on your local machine to use this application and get started with Enterprise Connect.
 
@@ -72,7 +72,7 @@ Be sure to have the following software installed and configured on your machine:
 - [Cloud Foundry CLI](https://github.com/cloudfoundry/cli/releases): Official command line client for Cloud Foundry
 - [Predix CLI](https://github.com/PredixDev/predix-cli) (Optional): Command line utility meant to simplify interaction with the Predix Cloud
 
-#### Get the app and use it
+#### Get, Build and Run!
 
 Get the code:
 
