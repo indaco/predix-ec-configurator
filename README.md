@@ -62,7 +62,11 @@ Two options are available:
 
 If you are looking for a quick way to use this app instead to install and configure your computer, refer to the Vagrant box setup available [here](https://github.com/indaco/predix-ec-configurator-vagrant).
 
-### 2\. Build the app for yourself
+### 2\. Docker container
+
+If you are looking for a quick way to use this app as docker container, refer to the docker version [here](https://github.com/indaco/predix-ec-configurator-docker).
+
+### 3\. Build the app for yourself
 
 Below what is needed on your local machine to use this application and get started with Enterprise Connect.
 
