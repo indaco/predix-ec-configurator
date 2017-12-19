@@ -27,10 +27,12 @@ func init() {
 
 type ArgsConfig struct {
 	vagrant bool
+	docker bool
 }
 
 func (c *ArgsConfig) Setup() {
 	flag.BoolVar(&c.vagrant, "vagrant", false, "is it running with Vagrant?")
+	flag.BoolVar(&c.docker, "docker", false, "is it running as Docker container?")
 }
 
 func main() {
@@ -42,14 +44,21 @@ func main() {
 	userConfig := helpers.UserConfig{}
 	_ = helpers.LoadConfig("config.json", &userConfig)
 
-	// Running on Vagrant? If yes, change output folder path
-	// https://github.com/indaco/predix-ec-configurator-vagrant
+	/*
+	 * Runs on Vagrant or as Docker container? If yes, change output folder path.
+	 * See:
+	 * - https://github.com/indaco/predix-ec-configurator-vagrant
+	 * - https://github.com/indaco/predix-ec-configurator-docker
+	 */
 	args := ArgsConfig{}
 	args.Setup()
 	flag.Parse()
 	if args.vagrant {
 		log.Println("-> predix-ec-configurator is running on a Vagrant box")
 		appConfig.Output.Root = "/vagrant/output"
+	} else if args.docker {
+		log.Println("-> predix-ec-configurator is running as Docker container")
+		appConfig.Output.Root = "/go/src/github.com/indaco/ecapp/output"
 	}
 
 	// Create a CF Predix Client and sign-in to Predix.io
