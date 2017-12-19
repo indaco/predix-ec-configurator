@@ -20,7 +20,7 @@ func PredixLogin(clientConfig *cfclient.Config) *cfclient.Client {
 	log.Println("-> Logging to Predix.io ...")
 	client, err := cfclient.NewClient(clientConfig)
 	if err != nil {
-		log.Panicf("*** ERROR: Check your credential!")
+		log.Fatal(err)
 	}
 	log.Printf("* LOGGED IN as %s", clientConfig.Username)
 	return client
